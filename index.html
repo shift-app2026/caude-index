@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>マイシフト＆給料</title>
   
-  <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAADCklEQVR4nO3dwW1TQRRAUYOogE0aoATaYEEJtEEBdIHoACTqoARqSA0sQChAbuLgzJ+Z6JxCxubpMj+K/ZRnH6/enOA2z2e/AdYlDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SC9mv4E/fLn+NvstzPf25evZb+GXJeLQxE2/pzG9kvmPFWWU6ZOZeHnM/8ev7+eIZl0h024OZZxv1qzmxKGMh5oysfk/c7CsCXG4Nv7P8XM7Og5lXOLg6XmskMRBOjQOz5TLHTlDNwdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgfp0C37r9efj3y5p+rTqw/HpJCbgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQO0hJ/UuMcf31O/e77e+ePtsfN8e83GB73Ow27nz/IBnHUHB9rvrufP87qcdw9wcvnu/v5Qy0dxzmzu2S+u58/2tJxMJc4SOIgiYO0dBzn/Kbokt8m7X7+aEvHcbdpdddpdfvfzh1o9jlNP8LEmu/v542wQx+m2OT7uZHc/f5BnH6/eHPZiW0xkfXZlmU8cJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcpB/mCfM2/VKEGAAAAABJRU5ErkJggg==">
+  <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAADCklEQVR4nO3dwW1TQRRAUYOogE0aoATaYEEJtEEBdIHoACTqoARqSA0sQChAbuLgzJ+Z6JxCxubpMj+K/ZRnH6/enOA2z2e/AdYlDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SC9mv4E/fLn+NvstzPf25evZb+GXJeLQxE2/pzG9kvmPFWWU6ZOZeHnM/8ev7+eIZl0h024OZZxv1qzmxKGMh5oysfk/c7CsCXG4Nv7P8XM7Og5lXOLg6XmskMRBOjQOz5TLHTlDNwdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgdJHCRxkMRBEgfp0C37r9efj3y5p+rTqw/HpJCbgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQO0hJ/UuMcf31O/e77e+ePtsfN8e83GB73Ow27nz/IBnHUHB9rvrufP87qcdw9wcvnu/v5Qy0dxzmzu2S+u58/2tJxMJc4SOIgiYO0dBzn/Kbokt8m7X7+aEvHcbdpdddpdfvfzh1o9jlNP8LEmu/v542wQx+m2OT7uZHc/f5BnH6/eHPZiW0xkfXZlmU8cJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcpB/mCfM2/VKEGAAAAABJRU5ErkJggg==">
   <meta name="theme-color" content="#881337">
 
   <style>/* Tailwind CSS（ビルド済み） */
@@ -79,11 +79,11 @@
     .glass-orb-rose { background: linear-gradient(135deg, #db2777 0%, #be185d 100%); }
     .glass-orb-stone { background: linear-gradient(135deg, #a8a29e 0%, #57534e 100%); }
 
-    .wage-time::-webkit-calendar-picker-indicator { display: none; }
+    /* ネイティブの時計ピッカーアイコンを1つだけに非表示制御 */
+    .clock-time::-webkit-calendar-picker-indicator { opacity: 0; position: absolute; right: 0; width: 100%; height: 100%; cursor: pointer; }
     .wage-time { -webkit-appearance: none; appearance: none; min-height: 2rem; }
     .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
-    .clock-time::-webkit-calendar-picker-indicator { display: block; opacity: .75; cursor: pointer; margin-left: 2px; }
   </style>
 <style>
   @media (max-width: 639px) {
@@ -111,7 +111,7 @@
   #toastMessage { top: calc(0.75rem + env(safe-area-inset-top, 0px)); }
 </style>
 <style>
-/* ===== 不足していたクラスを補完（w-20 が無く、入力欄が画面外へ伸びる原因でした） ===== */
+/* ===== 不足していたクラスを補完 ===== */
 .w-20 { width: 5rem; }
 .gap-3 { gap: 0.75rem; }
 .leading-snug { line-height: 1.375; }
@@ -139,7 +139,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
 /* ===== 円グラフ：パーセント表示をくすみボルドーに ===== */
 #goalPercentText { background: linear-gradient(135deg, #b8607b 0%, #8f3f59 100%); }
 
-/* ===== 下部タブ：5つ並べても切れない／折り返しても崩れない ===== */
+/* ===== 下部タブ ===== */
 .tab-btn {
   min-width: 0;
   display: flex;
@@ -151,29 +151,31 @@ html, body { max-width: 100%; overflow-x: hidden; }
   padding-right: 2px;
 }
 
-/* ===== 円グラフを大きく／給料内訳ボタンを右下へ ===== */
-#goalRing { width: min(15rem, 62vw); height: min(15rem, 62vw); }
-#goalCurrentPay { font-size: 2rem; line-height: 1.2; }
-#breakdownPill {
-  position: absolute; right: 0; bottom: -8px;
-  display: flex; flex-direction: row; align-items: center; gap: 4px;
-  white-space: nowrap;
-  padding: 7px 11px; border-radius: 14px;
-  background: #fff; border: 1px solid #efc9d3; color: #5c1f33;
-  font-weight: 700; font-size: 0.8125rem; line-height: 1.2;
-  box-shadow: 0 2px 6px rgba(143,63,89,0.12);
-}
-#breakdownPill:active { background: #fdf1f4; }
+/* ===== 円グラフを大きく（16rem〜66vwに拡大）＆給料見込の文字を少し大きく ===== */
+#goalRing { width: min(16rem, 66vw); height: min(16rem, 66vw); }
+#goalCurrentPay { font-size: 2.25rem; line-height: 1.2; }
+.goal-label-text { font-size: 0.8125rem; }
 
-/* ===== コピーカードの文字（1行に収める。万一折り返しても1文字だけ残らない） ===== */
+/* ===== 給料内訳ボタン（背景色を白・ボーダーを統一） ===== */
+#breakdownPill {
+  display: inline-flex; flex-direction: row; align-items: center; gap: 4px;
+  white-space: nowrap;
+  padding: 8px 12px; border-radius: 12px;
+  background: #fff; border: 1px solid #e7e5e4; color: #1c1917;
+  font-weight: 700; font-size: 0.8125rem; line-height: 1.2;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+#breakdownPill:active { background: #f5f5f4; }
+
+/* ===== コピーカードの文字 ===== */
 .copy-label { font-size: 0.71875rem; text-wrap: balance; }
 
 /* ===== 少しだけ大きい文字（13px） ===== */
 .t13 { font-size: 0.8125rem; line-height: 1.25rem; }
 
-/* ===== 設定タブ：全体を読みやすく（入力欄の文字は元から16px固定なので影響なし） ===== */
-#tab-settings .text-xs { font-size: 0.875rem; line-height: 1.3rem; }
-#tab-settings .text-sm { font-size: 1rem; line-height: 1.45rem; }
+/* ===== 設定タブ（文字切れ防止・余白バランス調整） ===== */
+#tab-settings .text-xs { font-size: 0.8125rem; line-height: 1.35rem; }
+#tab-settings .text-sm { font-size: 0.9375rem; line-height: 1.45rem; }
 #tab-settings .font-medium { font-weight: 700; }
 #tab-settings .text-stone-500 { color: #57504b; }
 #tab-settings .text-stone-600 { color: #44403c; }
@@ -280,14 +282,6 @@ html, body { max-width: 100%; overflow-x: hidden; }
           <button type="button" id="modalTypePaidBtn" onclick="setModalShiftType(true)" class="flex-1 py-2.5 rounded-xl text-sm font-bold border transition bg-white text-stone-700 border-stone-200 hover:bg-stone-50">☆ 有給休暇</button>
         </div>
 
-        <div class="space-y-1.5">
-          <div class="flex justify-between items-center">
-            <span class="text-sm font-bold text-stone-700">【新規シフト入力】</span>
-            <button type="button" onclick="registerNewPresetAndRegister()" class="px-4 py-1.5 bg-rose-900 text-rose-50 hover:bg-rose-800 rounded-lg font-bold text-xs transition shadow-sm whitespace-nowrap">登録</button>
-          </div>
-          <div id="modalCustomPresetContainer" class="space-y-2"></div>
-        </div>
-
         <button type="button" onclick="openPresetRegisterModal()" class="w-full py-2 rounded-xl text-sm font-bold bg-rose-50 text-rose-900 border border-rose-200 hover:bg-rose-100 transition">ワンタッチ時間登録</button>
 
         <div class="space-y-1.5">
@@ -297,6 +291,15 @@ html, body { max-width: 100%; overflow-x: hidden; }
           </div>
           
           <div id="modalPresetContainer" class="grid grid-cols-1 gap-2 text-xs"></div>
+        </div>
+
+        <!-- 【新規シフト入力】をワンタッチ時間登録一覧の下・シフト一覧の上に配置 -->
+        <div class="space-y-2 bg-stone-50 p-3 rounded-2xl border border-stone-200">
+          <div class="flex justify-between items-center">
+            <span class="text-sm font-bold text-stone-700">【新規シフト入力】</span>
+          </div>
+          <div id="modalCustomPresetContainer" class="space-y-2"></div>
+          <button type="button" onclick="registerNewPresetAndRegister()" class="w-full py-2 bg-rose-900 text-rose-50 hover:bg-rose-800 rounded-xl font-bold text-xs transition shadow-sm">登録する</button>
         </div>
 
         <div class="space-y-1.5">
@@ -322,19 +325,22 @@ html, body { max-width: 100%; overflow-x: hidden; }
   <div id="presetRegisterModal" style="z-index:60" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-3 hidden">
     <div class="bg-white rounded-3xl p-5 w-full max-w-sm shadow-2xl border border-stone-200 space-y-4">
       <h3 class="text-sm font-bold text-stone-900 tracking-wide border-b border-stone-200 pb-2.5">ワンタッチ時間登録</h3>
-      <p class="text-xs font-bold text-rose-900">※入力が完了したら必ず登録ボタンを押してね</p>
+      
+      <!-- フォントを少し小さくし、テキストと登録ボタンを横並びにする構成 -->
+      <div class="flex items-center justify-between gap-2">
+        <p class="text-[11px] font-bold text-rose-900 leading-tight">※入力が完了したら<br>必ず登録ボタンを押してね</p>
+        <button type="button" onclick="submitPresetRegister()" class="px-3.5 py-2 bg-rose-900 text-rose-50 hover:bg-rose-800 rounded-xl font-bold text-xs transition shadow-sm whitespace-nowrap shrink-0">登録</button>
+      </div>
+
       <div class="bg-white p-2 border rounded-2xl border-stone-200 flex items-center justify-between gap-1">
         <div class="relative flex-1 min-w-0">
-          <input type="time" id="pr_start" class="wage-time clock-time w-full px-0.5 py-1 pr-6 border rounded-lg border-stone-200 bg-stone-50 font-bold text-center text-sm">
-          <span class="absolute right-1.5 top-1/2 -translate-y-1/2 text-stone-400 font-bold text-xs pointer-events-none">🕘</span>
+          <input type="time" id="pr_start" class="wage-time clock-time w-full px-1 py-1.5 border rounded-lg border-stone-200 bg-stone-50 font-bold text-center text-sm">
         </div>
         <span class="font-bold text-stone-400 text-xs">〜</span>
         <div class="relative flex-1 min-w-0">
-          <input type="time" id="pr_end" class="wage-time clock-time w-full px-0.5 py-1 pr-6 border rounded-lg border-stone-200 bg-stone-50 font-bold text-center text-sm">
-          <span class="absolute right-1.5 top-1/2 -translate-y-1/2 text-stone-400 font-bold text-xs pointer-events-none">🕘</span>
+          <input type="time" id="pr_end" class="wage-time clock-time w-full px-1 py-1.5 border rounded-lg border-stone-200 bg-stone-50 font-bold text-center text-sm">
         </div>
         <button type="button" onclick="openBreakSelectModal('preset')" class="px-2 py-1.5 bg-stone-100 hover:bg-stone-200 border border-stone-200 rounded-lg font-bold text-xs text-stone-700 transition whitespace-nowrap">☕<span id="pr_break_disp">0分</span></button>
-        <button type="button" onclick="submitPresetRegister()" class="px-3 py-1.5 bg-rose-900 text-rose-50 hover:bg-rose-800 rounded-lg font-bold text-xs transition shadow-sm whitespace-nowrap">登録</button>
       </div>
       <button type="button" onclick="closePresetRegisterModal()" class="w-full py-2 rounded-xl bg-stone-200 text-stone-700 hover:bg-stone-300 text-sm font-bold transition">閉じる</button>
     </div>
@@ -355,7 +361,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
     </div>
   </div>
 
-  <div id="appCard" class="w-full max-w-md bg-white rounded-[1.5rem] sm:rounded-[2rem] shadow-2xl border border-stone-200 overflow-hidden flex flex-col h-[94dvh] sm:h-auto max-h-[920px]">
+  <div id="appCard" class="w-full max-w-md bg-white rounded-[1.5rem] sm:rounded-[2rem] shadow-2xl border border-stone-100 overflow-hidden flex flex-col h-[94dvh] sm:h-auto max-h-[920px]">
 
     <div id="appScroll" class="p-3 sm:p-4 flex-1 space-y-3 overflow-y-auto pb-28">
       
@@ -369,20 +375,9 @@ html, body { max-width: 100%; overflow-x: hidden; }
           <button type="button" onclick="changePayPeriodOffset(1)" class="text-rose-100 font-bold px-3 py-1.5 hover:bg-white/10 rounded-xl transition text-sm">翌月 ▶</button>
         </div>
 
-        <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm space-y-3 relative">
-          <div class="flex flex-col gap-2 px-1 sm:flex-row sm:items-center sm:justify-between">
-            <span class="text-xs font-bold text-stone-500 leading-tight">※円グラフは上に表示した月の給与受取額です</span>
-            <div class="flex items-center gap-1.5 self-end sm:self-auto shrink-0">
-              <span class="text-xs font-bold text-stone-500 shrink-0">目標金額</span>
-              <div class="flex items-center gap-1 bg-stone-50 border border-stone-200 rounded-lg px-2 py-0.5 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
-                <span class="text-xs font-bold text-stone-600">¥</span>
-                <input type="text" inputmode="numeric" id="goalAmountHeader" oninput="formatInputNumber(this)" onblur="saveInlineMonthlyGoal(this)" onkeydown="if(event.key==='Enter'){this.blur();}" class="w-24 min-w-0 bg-transparent font-bold text-stone-800 text-right focus:outline-none text-sm" style="padding: 2px !important;" placeholder="未設定">
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-center justify-center py-1 relative">
-            <div id="goalRing" class="relative w-48 h-48 sm:w-52 sm:h-52 flex items-center justify-center shrink-0">
+        <div class="bg-white p-4 rounded-2xl border border-stone-100 shadow-[0_1px_2px_rgba(0,0,0,0.02)] space-y-3 relative">
+          <div class="flex items-center justify-center py-2 relative">
+            <div id="goalRing" class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center shrink-0">
               <svg class="w-full h-full transform -rotate-90" style="filter: drop-shadow(0 6px 10px rgba(143,63,89,0.16));" viewBox="0 0 36 36">
                 <defs>
                   <linearGradient id="goalGrad" x1="0" y1="0" x2="1" y2="1">
@@ -396,11 +391,19 @@ html, body { max-width: 100%; overflow-x: hidden; }
               </svg>
               
               <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                <span class="text-xs font-bold text-stone-500 tracking-wider">給料見込</span>
+                <span class="goal-label-text font-bold text-stone-500 tracking-wider">給料見込</span>
                 <span id="goalCurrentPay" class="text-3xl sm:text-4xl font-bold font-serif-title text-stone-900 tracking-tight">¥0</span>
                 <span id="goalPercentText" class="text-xs sm:text-sm font-bold text-rose-50 bg-rose-900 px-3 py-0.5 rounded-full mt-1 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">0%</span>
                 <span id="goalRemainText" class="text-xs font-bold text-stone-500 mt-1"></span>
               </div>
+            </div>
+          </div>
+
+          <!-- 下部：左に目標金額、右に給料内訳 -->
+          <div class="flex items-center justify-between pt-1 gap-2">
+            <div class="flex items-center gap-1.5 bg-white border border-stone-200 rounded-xl px-3 py-2 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+              <span class="text-xs font-bold text-stone-600">目標金額 ¥</span>
+              <input type="text" inputmode="numeric" id="goalAmountHeader" oninput="formatInputNumber(this)" onblur="saveInlineMonthlyGoal(this)" onkeydown="if(event.key==='Enter'){this.blur();}" class="w-24 min-w-0 bg-transparent font-bold text-stone-800 text-left focus:outline-none text-sm" style="padding: 2px !important;" placeholder="未設定">
             </div>
             <button type="button" id="breakdownPill" onclick="openBreakdownModal()"><span>📋</span><span>給料内訳</span></button>
           </div>
@@ -418,7 +421,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
           </div>
         </div>
 
-        <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-[0_1px_2px_rgba(0,0,0,0.05)] space-y-2">
+        <div class="bg-white p-4 rounded-2xl border border-stone-100 shadow-[0_1px_2px_rgba(0,0,0,0.02)] space-y-2">
           <div class="text-sm font-bold text-stone-800 border-b border-stone-200 pb-2 flex justify-between items-center tracking-wide">
             <span id="yearlyTitleLabel">年間収入合計</span>
           </div>
@@ -469,7 +472,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
           </div>
         </div>
 
-        <div class="bg-white border border-stone-200 rounded-3xl p-3 shadow-sm space-y-2">
+        <div class="bg-white border border-stone-100 rounded-3xl p-3 shadow-sm space-y-2">
           <div class="grid grid-cols-7 text-center text-sm sm:text-base font-bold text-stone-500 mb-1">
             <span class="text-rose-500">日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span class="text-sky-600">土</span>
           </div>
@@ -478,7 +481,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
         </div>
 
         <!-- シフト確認エリア -->
-        <div class="bg-white border border-stone-200 rounded-3xl p-4 shadow-sm space-y-3">
+        <div class="bg-white border border-stone-100 rounded-3xl p-4 shadow-sm space-y-3">
           <div class="text-sm sm:text-base font-bold text-stone-900 border-b border-stone-200 pb-2 flex items-center justify-between tracking-wide">
             <span>📌 今日のシフト (<span id="calendarTodayDateLabel"></span>)</span>
           </div>
@@ -496,7 +499,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
           <button type="button" onclick="changeListMonth(1)" class="text-rose-100 font-bold px-3 py-1.5 hover:bg-white/10 rounded-xl transition text-sm">翌月 ▶</button>
         </div>
 
-        <div class="bg-white p-3.5 rounded-2xl border border-stone-200 space-y-2.5 shadow-sm">
+        <div class="bg-white p-3.5 rounded-2xl border border-stone-100 space-y-2.5 shadow-sm">
           <div class="text-xs sm:text-sm font-bold text-stone-700 border-b border-stone-100 pb-2 flex flex-col items-start tracking-wide leading-relaxed pl-1 space-y-1">
             <span class="text-xs text-stone-700 font-bold">📅 タップするとGoogleカレンダーに登録されます</span>
             <span class="t13 text-rose-900 font-bold">日付をタップすると、シフトを修正できます♡</span>
@@ -520,7 +523,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
           </div>
         </div>
 
-        <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm space-y-3">
+        <div class="bg-white p-4 rounded-2xl border border-stone-100 shadow-sm space-y-3">
           <div class="space-y-2">
             <div class="flex items-center justify-between gap-2">
               <button type="button" onclick="registerNewJob()" class="bg-rose-900 text-rose-50 hover:bg-rose-800 font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm transition shadow-sm whitespace-nowrap">バイト名の登録</button>
@@ -564,8 +567,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
           </div>
         </div>
 
-        <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm space-y-3 text-xs sm:text-sm text-stone-800 leading-relaxed">
-          <!-- フォントサイズを text-xs にして「う」まで確実におさまるように調整しました -->
+        <div class="bg-white p-4 rounded-2xl border border-stone-100 shadow-sm space-y-3 text-xs sm:text-sm text-stone-800 leading-relaxed">
           <div class="bg-rose-50 border border-rose-200 rounded-xl px-3 py-2.5 font-bold text-rose-900 text-xs sm:text-sm whitespace-nowrap overflow-hidden text-ellipsis">
             🌸 まずは「設定」タブでバイト先を登録しよう
           </div>
@@ -1499,7 +1501,6 @@ html, body { max-width: 100%; overflow-x: hidden; }
       container.innerHTML = `<div class="grid grid-cols-2 gap-2 w-full">${cardsHtml}</div>`;
     }
 
-    let pendingNewJobCount = null;
     function registerNewJob() {
       const activeKeys = getActiveJobKeys();
       const emptyKey = activeKeys.find(jk => !configData[jk].name);
@@ -1627,7 +1628,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
             <div class="grid grid-cols-1 gap-2">
               <div class="bg-stone-50 p-3 rounded-xl border border-stone-200 space-y-1.5">
                 <div class="flex items-center justify-between gap-2">
-                  <span class="font-bold text-stone-700 flex-1 min-w-0 whitespace-nowrap">有給休暇<span class="paid-sub ml-2 text-stone-500 font-bold">1時間あたり</span></span>
+                  <span class="font-bold text-stone-700 flex-1 min-w-0 whitespace-nowrap">有給休暇<span class="paid-sub ml-1.5 text-stone-500 font-bold">1時間あたり</span></span>
                   <div class="flex items-center gap-1 shrink-0"><input type="text" inputmode="numeric" id="set_wagePaid" oninput="formatInputNumber(this)" class="w-24 p-2 border rounded text-right font-bold bg-white text-sm"><span class="font-bold">円</span></div>
                 </div>
                 <p class="paid-note text-xs text-stone-500 font-medium">※時給が異なる場合は、頻繁に入っている<br>時間帯の時給か、平均時給を入力してね</p>
@@ -1905,13 +1906,11 @@ html, body { max-width: 100%; overflow-x: hidden; }
         <div class="bg-white p-2.5 border rounded-2xl border-stone-200 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
           <div class="flex items-center justify-between gap-1.5">
             <div class="relative flex-1 min-w-0">
-              <input type="time" id="new_preset_start" value="${newPresetForm.start}" onchange="updateNewPresetForm()" class="wage-time clock-time w-full px-1 py-1.5 pr-6 border rounded-lg border-stone-200 bg-stone-50 font-bold text-center text-sm">
-              <span class="absolute right-1.5 top-1/2 -translate-y-1/2 text-stone-400 font-bold text-xs pointer-events-none">🕘</span>
+              <input type="time" id="new_preset_start" value="${newPresetForm.start}" onchange="updateNewPresetForm()" class="wage-time clock-time w-full px-1.5 py-1.5 border rounded-lg border-stone-200 bg-stone-50 font-bold text-center text-sm">
             </div>
             <span class="font-bold text-stone-400 text-xs">〜</span>
             <div class="relative flex-1 min-w-0">
-              <input type="time" id="new_preset_end" value="${newPresetForm.end}" onchange="updateNewPresetForm()" class="wage-time clock-time w-full px-1 py-1.5 pr-6 border rounded-lg border-stone-200 bg-stone-50 font-bold text-center text-sm">
-              <span class="absolute right-1.5 top-1/2 -translate-y-1/2 text-stone-400 font-bold text-xs pointer-events-none">🕘</span>
+              <input type="time" id="new_preset_end" value="${newPresetForm.end}" onchange="updateNewPresetForm()" class="wage-time clock-time w-full px-1.5 py-1.5 border rounded-lg border-stone-200 bg-stone-50 font-bold text-center text-sm">
             </div>
             <button type="button" onclick="openBreakSelectModal()" class="px-2.5 py-2 bg-stone-100 hover:bg-stone-200 border border-stone-200 rounded-lg font-bold text-xs text-stone-700 transition whitespace-nowrap">☕<span id="modalBreakDisplayVal">${breakMins}分</span></button>
           </div>
@@ -2431,7 +2430,8 @@ html, body { max-width: 100%; overflow-x: hidden; }
           `;
         }
 
-        let iconHtml = `<div class="min-h-[14px] flex items-center justify-center space-x-0.5">${dotsHtml}</div>`;
+        // 丸印の有無に関わらず高さを固定し、位置がずれないようレイアウト構造を統一
+        let iconHtml = `<div style="height: 14px;" class="flex items-center justify-center space-x-0.5">${dotsHtml}</div>`;
 
         const isToday = (dateStr === formatDateKey(new Date()));
         const isSunHol = (d.getDay() === 0 || isJapaneseHoliday(d));
@@ -2613,9 +2613,10 @@ html, body { max-width: 100%; overflow-x: hidden; }
           bgStyle = "bg-amber-100/80 border border-amber-300 hover:bg-amber-200/70";
         }
 
+        // 予定表の日付部分（「〇日 (〇)」）の幅を固定（w-24等）にして左右均等にきれいに並ぶように調整
         container.innerHTML += `
           <div id="list-row-${dateStr}" onclick="openShiftInputModal('${dateStr}')" class="flex items-center px-3 py-2 rounded-2xl border transition ${bgStyle} space-x-3 overflow-hidden cursor-pointer" title="この日をタップしてシフトを追加・変更">
-            <div class="w-20 shrink-0 whitespace-nowrap font-bold text-base ${dayColor}">
+            <div class="w-24 shrink-0 text-center font-bold text-base ${dayColor}">
               ${d.getDate()}日 (${dayOfWeek})
             </div>
             <div class="flex-1 space-y-0 overflow-hidden">
