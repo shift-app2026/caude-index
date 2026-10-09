@@ -150,6 +150,27 @@ html, body { max-width: 100%; overflow-x: hidden; }
   padding-left: 2px;
   padding-right: 2px;
 }
+
+/* ===== 円グラフを大きく／給料内訳ボタンを右下へ ===== */
+#goalRing { width: min(15rem, 62vw); height: min(15rem, 62vw); }
+#goalCurrentPay { font-size: 2rem; line-height: 1.2; }
+#breakdownPill {
+  position: absolute; right: 0; bottom: 4px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 7px 9px; border-radius: 14px;
+  background: #fff; border: 1px solid #efc9d3; color: #5c1f33;
+  font-weight: 700; font-size: 0.8125rem; line-height: 1.2;
+  box-shadow: 0 2px 6px rgba(143,63,89,0.12);
+}
+#breakdownPill:active { background: #fdf1f4; }
+
+/* ===== 少しだけ大きい文字（13px） ===== */
+.t13 { font-size: 0.8125rem; line-height: 1.25rem; }
+
+/* ===== 設定タブ：全体を読みやすく（入力欄の文字は元から16px固定なので影響なし） ===== */
+#tab-settings .text-xs { font-size: 0.8125rem; line-height: 1.2rem; }
+#tab-settings .text-sm { font-size: 0.9375rem; line-height: 1.35rem; }
+#tab-settings .wage-empty { font-size: 0.75rem !important; line-height: 1rem; }
 </style>
 </head>
 <body class="flex justify-center p-1 sm:p-2 relative min-h-screen items-center">
@@ -236,9 +257,9 @@ html, body { max-width: 100%; overflow-x: hidden; }
       </div>
 
       <div class="space-y-3 overflow-y-auto pr-1 flex-1 no-scrollbar">
-        <p class="text-xs font-bold text-stone-700">バイト名を選択してからシフトを入力してね。</p>
+        <p class="t13 font-bold text-stone-700">バイト名を選択してからシフトを入力してね。</p>
         <div id="modalJobSelectContainer" class="flex space-x-1.5"></div>
-        <div id="modalWageWarn" class="hidden bg-amber-50 border border-amber-200 text-amber-900 text-xs font-bold p-2 rounded-xl"></div>
+        <div id="modalWageWarn" class="hidden bg-amber-50 border border-amber-200 text-amber-900 text-xs font-bold p-2 rounded-xl whitespace-pre-line leading-snug"></div>
 
         <div class="flex space-x-2">
           <button type="button" id="modalTypeWorkBtn" onclick="setModalShiftType(false)" class="flex-1 py-2.5 rounded-xl text-sm font-bold border transition bg-stone-100 text-stone-900 border-stone-300 shadow-sm">通常勤務</button>
@@ -247,7 +268,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
 
         <div class="space-y-1.5">
           <div class="flex justify-between items-center">
-            <span class="text-xs font-bold text-stone-700">【新規シフト入力】</span>
+            <span class="text-sm font-bold text-stone-700">【新規シフト入力】</span>
             <button type="button" onclick="registerNewPresetAndRegister()" class="px-4 py-1.5 bg-rose-900 text-rose-50 hover:bg-rose-800 rounded-lg font-bold text-xs transition shadow-sm whitespace-nowrap">登録</button>
           </div>
           <div id="modalCustomPresetContainer" class="space-y-2"></div>
@@ -257,7 +278,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
 
         <div class="space-y-1.5">
           <div class="flex flex-col">
-            <span class="text-xs font-bold text-stone-700">【ワンタッチ時間登録一覧】</span>
+            <span class="text-sm font-bold text-stone-700">【ワンタッチ時間登録一覧】</span>
             <span class="text-xs text-stone-500 font-bold">※ここでは時間の修正はできません。</span>
           </div>
           
@@ -266,7 +287,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
 
         <div class="space-y-1.5">
           <div class="flex justify-between items-center">
-            <span class="text-xs font-bold text-stone-700">【シフト一覧】</span>
+            <span class="text-sm font-bold text-stone-700">【シフト一覧】</span>
           </div>
           <div id="modalSelectedDateSummaryContent" class="space-y-2 text-xs text-stone-700">
             <span class="text-stone-400">シフトは登録されていません</span>
@@ -347,7 +368,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
           </div>
 
           <div class="flex items-center justify-center py-1 relative">
-            <div class="relative w-48 h-48 sm:w-52 sm:h-52 flex items-center justify-center shrink-0">
+            <div id="goalRing" class="relative w-48 h-48 sm:w-52 sm:h-52 flex items-center justify-center shrink-0">
               <svg class="w-full h-full transform -rotate-90" style="filter: drop-shadow(0 6px 10px rgba(143,63,89,0.16));" viewBox="0 0 36 36">
                 <defs>
                   <linearGradient id="goalGrad" x1="0" y1="0" x2="1" y2="1">
@@ -367,12 +388,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
                 <span id="goalRemainText" class="text-xs font-bold text-stone-500 mt-1"></span>
               </div>
             </div>
-            </div>
-
-          <div class="px-1">
-            <button type="button" onclick="openBreakdownModal()" class="w-full py-3 px-3 bg-rose-50/70 hover:bg-rose-100/70 text-rose-950 font-bold rounded-xl text-sm transition border border-rose-200 shadow-[0_1px_2px_rgba(0,0,0,0.05)] flex items-center justify-center space-x-1">
-              <span>📋 給料内訳</span>
-            </button>
+            <button type="button" id="breakdownPill" onclick="openBreakdownModal()"><span>📋</span><span>給料内訳</span></button>
           </div>
         </div>
 
@@ -404,14 +420,14 @@ html, body { max-width: 100%; overflow-x: hidden; }
           </div>
 
           <div id="incomeWallBox" class="mt-3 bg-stone-50/70 border border-stone-200 rounded-xl px-3 py-2.5 transition-colors duration-300">
-            <div class="text-xs font-bold text-stone-400 mb-1">【年収の壁】</div>
+            <div class="text-sm font-bold text-stone-600 mb-1">【年収の壁】</div>
             <div class="space-y-1.5 text-xs">
               <div class="flex justify-between items-baseline gap-2">
-                <span class="text-stone-500 font-bold">103万円まで</span>
+                <span class="text-base text-stone-700 font-bold">103万円まで</span>
                 <span id="wall103" class="font-bold text-stone-700 text-base">0円</span>
               </div>
               <div class="flex justify-between items-baseline gap-2">
-                <span class="text-stone-500 font-bold">130万円まで</span>
+                <span class="text-base text-stone-700 font-bold">130万円まで</span>
                 <span id="wall130" class="font-bold text-stone-700 text-base">0円</span>
               </div>
             </div>
@@ -435,7 +451,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
               <span class="text-base shrink-0">📋</span>
               <span class="leading-snug">前月のシフトを曜日に合わせて一括コピー</span>
             </div>
-            <button type="button" onclick="copyLastMonthShifts()" class="bg-rose-900 text-rose-50 hover:bg-rose-800 font-bold text-xs sm:text-sm px-3 py-2 rounded-xl transition shadow-sm whitespace-nowrap shrink-0">コピー</button>
+            <button type="button" onclick="copyLastMonthShifts()" class="bg-rose-900 text-rose-50 hover:bg-rose-800 font-bold text-xs sm:text-sm px-3 py-2 rounded-xl transition shadow-sm whitespace-nowrap shrink-0">実行</button>
           </div>
         </div>
 
@@ -468,8 +484,8 @@ html, body { max-width: 100%; overflow-x: hidden; }
 
         <div class="bg-white p-3.5 rounded-2xl border border-stone-200 space-y-2.5 shadow-sm">
           <div class="text-xs sm:text-sm font-bold text-stone-700 border-b border-stone-100 pb-2 flex flex-col items-start tracking-wide leading-relaxed pl-1 space-y-1">
-            <span class="text-xs text-stone-700 font-bold">📅 タップするとGoogleカレンダーに登録されます</span>
-            <span class="text-xs text-rose-900 font-bold">日付をタップすると、シフトを修正できます♡</span>
+            <span class="t13 text-stone-700 font-bold">📅 タップするとGoogleカレンダーに登録されます</span>
+            <span class="t13 text-rose-900 font-bold">日付をタップすると、シフトを修正できます♡</span>
             <div id="standaloneJobLegend" class="flex flex-wrap items-center gap-2.5 pt-1.5 pb-0.5"></div>
           </div>
           <div id="standaloneShiftListContainer" class="space-y-2 max-h-[62vh] overflow-y-auto pr-1 text-sm"></div>
@@ -944,7 +960,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
       if (warnEl) {
         const noWage = !jobHasWage(currentSelectedJobKey);
         warnEl.classList.toggle('hidden', !noWage);
-        if (noWage) warnEl.textContent = '⚠️ このバイト先は時給が未設定です。このままだと金額が¥0になるので、「設定」タブで時給を入れてね♡';
+        if (noWage) warnEl.textContent = '⚠️ このバイト先は時給が未設定です。\nこのままだと金額が¥0になるので、\n「設定」タブで時給を入れてね♡';
       }
 
       const activeKeys = getActiveJobKeys();
@@ -1626,7 +1642,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
 
     function buildWageSlotsHtml(j) {
       const slots = j.wageSlots || [];
-      if (!slots.length) return '<div class="text-center text-stone-400 font-bold py-3 text-xs sm:text-sm">時間帯が未登録です。「＋ 時間帯を追加」を押してね</div>';
+      if (!slots.length) return '<div class="wage-empty text-center text-stone-400 font-bold py-3 text-xs sm:text-sm">時間帯が未登録です。「＋ 時間帯を追加」を押してね</div>';
       return slots.map((s, i) => wageSlotRowHtml(i, s)).join('');
     }
 
