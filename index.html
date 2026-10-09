@@ -179,6 +179,11 @@ html, body { max-width: 100%; overflow-x: hidden; }
 #tab-settings .text-stone-600 { color: #44403c; }
 #tab-settings .head-sub { font-size: 0.8125rem; line-height: 1.3; text-wrap: balance; }
 #tab-settings .note-fit { font-size: 0.75rem; text-wrap: balance; }
+#tab-settings .wage-head-title { font-size: 0.9375rem; line-height: 1.4rem; }
+#tab-settings .wage-head-sub { font-size: 0.75rem; line-height: 1.2rem; }
+#tab-settings .wage-head-btn { font-size: 0.75rem; line-height: 1.2rem; padding-left: 0.625rem; padding-right: 0.625rem; }
+#tab-settings .paid-sub { font-size: 0.75rem; }
+#tab-settings .paid-note { font-size: 0.75rem; line-height: 1.25rem; }
 #tab-settings .wage-empty { font-size: 0.75rem !important; line-height: 1rem; }
 </style>
 </head>
@@ -1548,12 +1553,12 @@ html, body { max-width: 100%; overflow-x: hidden; }
           </div>
 
           <div class="space-y-2 pt-1 border-t border-stone-200">
-            <div class="flex justify-between items-center gap-2">
-              <div class="flex flex-col items-start min-w-0">
-                <span class="font-bold text-stone-900 text-sm sm:text-base whitespace-nowrap">【時給入力】</span>
-                <button type="button" onclick="openOvertimeInfoModal()" class="text-xs sm:text-sm font-bold text-rose-900 no-underline whitespace-nowrap">※確認してね</button>
+            <div class="flex justify-between items-center gap-1 whitespace-nowrap">
+              <div class="flex items-center gap-1.5 min-w-0">
+                <span class="wage-head-title font-bold text-stone-900 whitespace-nowrap">【時給入力】</span>
+                <button type="button" onclick="openOvertimeInfoModal()" class="wage-head-sub font-bold text-rose-900 whitespace-nowrap">※確認してね</button>
               </div>
-              <button type="button" onclick="addSettingsWageSlot()" class="bg-rose-50 text-rose-900 border border-rose-200 hover:bg-rose-100 font-bold px-3 py-2 rounded-xl transition shadow-[0_1px_2px_rgba(0,0,0,0.05)] shrink-0 whitespace-nowrap text-xs sm:text-sm">+ 時間帯を追加</button>
+              <button type="button" onclick="addSettingsWageSlot()" class="wage-head-btn bg-rose-50 text-rose-900 border border-rose-200 hover:bg-rose-100 font-bold py-2 rounded-xl transition shadow-[0_1px_2px_rgba(0,0,0,0.05)] shrink-0 whitespace-nowrap">+ 時間帯を追加</button>
             </div>
             <div id="setWageSlotsContainer" class="space-y-2.5">
               ${slotsHtml}
@@ -1565,10 +1570,10 @@ html, body { max-width: 100%; overflow-x: hidden; }
             <div class="grid grid-cols-1 gap-2">
               <div class="bg-stone-50 p-3 rounded-xl border border-stone-200 space-y-1.5">
                 <div class="flex items-center justify-between gap-2">
-                  <span class="font-bold text-stone-700 flex-1 min-w-0">有給休暇<span class="block text-stone-500 text-xs">1時間あたり</span></span>
-                  <div class="flex items-center gap-1 shrink-0"><input type="text" inputmode="numeric" id="set_wagePaid" oninput="formatInputNumber(this)" class="w-28 p-2 border rounded text-right font-bold bg-white text-sm"><span class="font-bold">円</span></div>
+                  <span class="font-bold text-stone-700 flex-1 min-w-0 whitespace-nowrap">有給休暇<span class="paid-sub ml-2 text-stone-500 font-bold">1時間あたり</span></span>
+                  <div class="flex items-center gap-1 shrink-0"><input type="text" inputmode="numeric" id="set_wagePaid" oninput="formatInputNumber(this)" class="w-24 p-2 border rounded text-right font-bold bg-white text-sm"><span class="font-bold">円</span></div>
                 </div>
-                <p class="text-xs text-stone-500 font-medium">※時給が異なる場合は、<br>頻繁に入っている時間帯の時給か、平均時給を入力してね</p>
+                <p class="paid-note text-xs text-stone-500 font-medium">※時給が異なる場合は、頻繁に入っている<br>時間帯の時給か、平均時給を入力してね</p>
                 <div class="flex items-center justify-between gap-2 pt-1">
                   <span class="font-bold text-stone-700 flex-1 min-w-0">有給1日あたりの時間</span>
                   <div class="flex items-center gap-1 shrink-0"><input type="text" inputmode="decimal" id="set_paidHours" class="w-20 p-2 border rounded text-right font-bold bg-white text-sm" placeholder=""><span class="text-stone-700 font-bold text-xs">時間</span></div>
