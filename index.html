@@ -155,14 +155,18 @@ html, body { max-width: 100%; overflow-x: hidden; }
 #goalRing { width: min(15rem, 62vw); height: min(15rem, 62vw); }
 #goalCurrentPay { font-size: 2rem; line-height: 1.2; }
 #breakdownPill {
-  position: absolute; right: 0; bottom: 4px;
-  display: flex; flex-direction: column; align-items: center; gap: 2px;
-  padding: 7px 9px; border-radius: 14px;
+  position: absolute; right: 0; bottom: -8px;
+  display: flex; flex-direction: row; align-items: center; gap: 4px;
+  white-space: nowrap;
+  padding: 7px 11px; border-radius: 14px;
   background: #fff; border: 1px solid #efc9d3; color: #5c1f33;
   font-weight: 700; font-size: 0.8125rem; line-height: 1.2;
   box-shadow: 0 2px 6px rgba(143,63,89,0.12);
 }
 #breakdownPill:active { background: #fdf1f4; }
+
+/* ===== コピーカードの文字（1行に収める。万一折り返しても1文字だけ残らない） ===== */
+.copy-label { font-size: 0.71875rem; text-wrap: balance; }
 
 /* ===== 少しだけ大きい文字（13px） ===== */
 .t13 { font-size: 0.8125rem; line-height: 1.25rem; }
@@ -446,12 +450,12 @@ html, body { max-width: 100%; overflow-x: hidden; }
         <div class="bg-rose-50 border border-rose-200 text-rose-900 text-xs sm:text-sm font-bold p-3 rounded-xl text-center">※シフトを入力したい日付をタップすると<br>「シフト登録画面」に移動します♡</div>
 
         <div class="bg-white border border-rose-200 rounded-3xl p-3.5 shadow-sm space-y-2">
-          <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center justify-between gap-2">
             <div class="flex items-center space-x-1.5 font-bold text-xs sm:text-sm text-stone-900 flex-1 min-w-0">
               <span class="text-base shrink-0">📋</span>
-              <span class="leading-snug">前月のシフトを曜日に合わせて一括コピー</span>
+              <span class="leading-snug copy-label">前月のシフトを曜日に合わせて一括コピー</span>
             </div>
-            <button type="button" onclick="copyLastMonthShifts()" class="bg-rose-900 text-rose-50 hover:bg-rose-800 font-bold text-xs sm:text-sm px-3 py-2 rounded-xl transition shadow-sm whitespace-nowrap shrink-0">実行</button>
+            <button type="button" onclick="copyLastMonthShifts()" class="bg-rose-900 text-rose-50 hover:bg-rose-800 font-bold text-xs sm:text-sm px-2.5 py-1.5 rounded-xl transition shadow-sm whitespace-nowrap shrink-0">実行</button>
           </div>
         </div>
 
@@ -484,7 +488,7 @@ html, body { max-width: 100%; overflow-x: hidden; }
 
         <div class="bg-white p-3.5 rounded-2xl border border-stone-200 space-y-2.5 shadow-sm">
           <div class="text-xs sm:text-sm font-bold text-stone-700 border-b border-stone-100 pb-2 flex flex-col items-start tracking-wide leading-relaxed pl-1 space-y-1">
-            <span class="t13 text-stone-700 font-bold">📅 タップするとGoogleカレンダーに登録されます</span>
+            <span class="text-xs text-stone-700 font-bold">📅 タップするとGoogleカレンダーに登録されます</span>
             <span class="t13 text-rose-900 font-bold">日付をタップすると、シフトを修正できます♡</span>
             <div id="standaloneJobLegend" class="flex flex-wrap items-center gap-2.5 pt-1.5 pb-0.5"></div>
           </div>
