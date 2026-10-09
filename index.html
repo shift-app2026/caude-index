@@ -110,6 +110,47 @@
   .transition-colors { transition-property: color, background-color, border-color; transition-timing-function: cubic-bezier(.4,0,.2,1); transition-duration: .15s; }
   #toastMessage { top: calc(0.75rem + env(safe-area-inset-top, 0px)); }
 </style>
+<style>
+/* ===== 不足していたクラスを補完（w-20 が無く、入力欄が画面外へ伸びる原因でした） ===== */
+.w-20 { width: 5rem; }
+.gap-3 { gap: 0.75rem; }
+.leading-snug { line-height: 1.375; }
+.text-2xl { font-size: 1.5rem; line-height: 2rem; }
+
+/* ===== 横はみ出しの安全対策 ===== */
+html, body { max-width: 100%; overflow-x: hidden; }
+#appCard, #appScroll { min-width: 0; }
+#appScroll { overflow-x: hidden; }
+
+/* ===== 見やすさ：文字色を少し濃く ===== */
+.text-stone-500 { color: #6b635e; }
+.text-stone-400 { color: #8d8681; }
+
+/* ===== 見やすさ：金額は太く、数字がくっきり読める書体に ===== */
+#goalCurrentPay, #monthlyReceiveTotalPay, #yearlyTotalPay, #wall103, #wall130 {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+#goalCurrentPay { white-space: nowrap; }
+#wall103, #wall130 { white-space: nowrap; }
+
+/* ===== 円グラフ：パーセント表示をくすみボルドーに ===== */
+#goalPercentText { background: linear-gradient(135deg, #b8607b 0%, #8f3f59 100%); }
+
+/* ===== 下部タブ：5つ並べても切れない／折り返しても崩れない ===== */
+.tab-btn {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+  font-size: clamp(11px, 3.2vw, 14px);
+  padding-left: 2px;
+  padding-right: 2px;
+}
+</style>
 </head>
 <body class="flex justify-center p-1 sm:p-2 relative min-h-screen items-center">
 
@@ -300,16 +341,23 @@
               <span class="text-xs font-bold text-stone-500 shrink-0">目標金額</span>
               <div class="flex items-center gap-1 bg-stone-50 border border-stone-200 rounded-lg px-2 py-0.5 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
                 <span class="text-xs font-bold text-stone-600">¥</span>
-                <input type="text" inputmode="numeric" id="goalAmountHeader" oninput="formatInputNumber(this)" onblur="saveInlineMonthlyGoal(this)" onkeydown="if(event.key==='Enter'){this.blur();}" class="w-20 bg-transparent font-bold text-stone-800 text-right focus:outline-none text-sm" style="padding: 2px !important;" placeholder="未設定">
+                <input type="text" inputmode="numeric" id="goalAmountHeader" oninput="formatInputNumber(this)" onblur="saveInlineMonthlyGoal(this)" onkeydown="if(event.key==='Enter'){this.blur();}" class="w-24 min-w-0 bg-transparent font-bold text-stone-800 text-right focus:outline-none text-sm" style="padding: 2px !important;" placeholder="未設定">
               </div>
             </div>
           </div>
 
           <div class="flex items-center justify-center py-1 relative">
             <div class="relative w-48 h-48 sm:w-52 sm:h-52 flex items-center justify-center shrink-0">
-              <svg class="w-full h-full transform -rotate-90 drop-shadow-md" viewBox="0 0 36 36">
-                <path class="text-stone-100" stroke-width="4.2" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                <path id="goalProgressCircle" class="text-rose-900 transition-all duration-700 ease-out" stroke-dasharray="0, 100" stroke-width="4.2" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <svg class="w-full h-full transform -rotate-90" style="filter: drop-shadow(0 6px 10px rgba(143,63,89,0.16));" viewBox="0 0 36 36">
+                <defs>
+                  <linearGradient id="goalGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#d9a0b0" />
+                    <stop offset="100%" stop-color="#8f3f59" />
+                  </linearGradient>
+                </defs>
+                <circle cx="18" cy="18" r="14.2" fill="#fcf7f8" />
+                <path stroke-width="2.8" stroke="#f1e3e7" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                <path id="goalProgressCircle" class="transition-all duration-700 ease-out" stroke-dasharray="0, 100" stroke-width="2.8" stroke-linecap="round" stroke="url(#goalGrad)" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
               </svg>
               
               <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
@@ -357,9 +405,15 @@
 
           <div id="incomeWallBox" class="mt-3 bg-stone-50/70 border border-stone-200 rounded-xl px-3 py-2.5 transition-colors duration-300">
             <div class="text-xs font-bold text-stone-400 mb-1">【年収の壁】</div>
-            <div class="flex justify-between items-baseline gap-2 whitespace-nowrap text-xs">
-              <span class="text-stone-500 font-bold">103万円まで <span id="wall103" class="font-bold text-stone-700 text-sm">0円</span></span>
-              <span class="text-stone-500 font-bold">130万円まで <span id="wall130" class="font-bold text-stone-700 text-sm">0円</span></span>
+            <div class="space-y-1.5 text-xs">
+              <div class="flex justify-between items-baseline gap-2">
+                <span class="text-stone-500 font-bold">103万円まで</span>
+                <span id="wall103" class="font-bold text-stone-700 text-base">0円</span>
+              </div>
+              <div class="flex justify-between items-baseline gap-2">
+                <span class="text-stone-500 font-bold">130万円まで</span>
+                <span id="wall130" class="font-bold text-stone-700 text-base">0円</span>
+              </div>
             </div>
           </div>
         </div>
@@ -376,10 +430,10 @@
         <div class="bg-rose-50 border border-rose-200 text-rose-900 text-xs sm:text-sm font-bold p-3 rounded-xl text-center">※シフトを入力したい日付をタップすると<br>「シフト登録画面」に移動します♡</div>
 
         <div class="bg-white border border-rose-200 rounded-3xl p-3.5 shadow-sm space-y-2">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-1.5 font-bold text-xs sm:text-sm text-stone-900">
-              <span class="text-base">📋</span>
-              <span class="whitespace-nowrap">前月のシフトを曜日に合わせて一括コピー</span>
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center space-x-1.5 font-bold text-xs sm:text-sm text-stone-900 flex-1 min-w-0">
+              <span class="text-base shrink-0">📋</span>
+              <span class="leading-snug">前月のシフトを曜日に合わせて一括コピー</span>
             </div>
             <button type="button" onclick="copyLastMonthShifts()" class="bg-rose-900 text-rose-50 hover:bg-rose-800 font-bold text-xs sm:text-sm px-3 py-2 rounded-xl transition shadow-sm whitespace-nowrap shrink-0">コピー</button>
           </div>
@@ -415,7 +469,7 @@
         <div class="bg-white p-3.5 rounded-2xl border border-stone-200 space-y-2.5 shadow-sm">
           <div class="text-xs sm:text-sm font-bold text-stone-700 border-b border-stone-100 pb-2 flex flex-col items-start tracking-wide leading-relaxed pl-1 space-y-1">
             <span class="text-xs text-stone-700 font-bold">📅 タップするとGoogleカレンダーに登録されます</span>
-            <span class="text-xs text-rose-900 font-bold whitespace-nowrap">日付をタップすると、シフトを修正できます♡</span>
+            <span class="text-xs text-rose-900 font-bold">日付をタップすると、シフトを修正できます♡</span>
             <div id="standaloneJobLegend" class="flex flex-wrap items-center gap-2.5 pt-1.5 pb-0.5"></div>
           </div>
           <div id="standaloneShiftListContainer" class="space-y-2 max-h-[62vh] overflow-y-auto pr-1 text-sm"></div>
@@ -450,13 +504,13 @@
 
           <div class="pt-3 border-t border-stone-200">
             <button type="button" onclick="saveSettings()" class="w-full bg-rose-900 text-rose-50 font-bold py-3 rounded-xl text-xs sm:text-sm hover:bg-rose-800 transition shadow-sm flex items-center justify-center space-x-1">
-              <span>💾 設定を保存する（入力は自動で保存されるよ♡）</span>
+              <span>💾 設定を保存する</span>
             </button>
           </div>
 
           <div class="pt-2.5 border-t border-stone-200 space-y-2">
             <div class="text-xs sm:text-sm font-bold text-stone-800">【データのバックアップ】</div>
-            <p class="text-xs text-stone-500 font-bold leading-tight">※機種変更やアプリの再インストールに備えて、時々書き出しておくと安心です</p>
+            <p class="text-xs text-stone-500 font-bold leading-relaxed">※機種変更やアプリの再インストールに備えて、<br>時々書き出しておくと安心です♡</p>
             <div class="flex space-x-2">
               <button type="button" onclick="exportAppData(event)" class="flex-1 bg-rose-50 hover:bg-rose-100 text-rose-900 font-bold py-3 rounded-xl text-xs sm:text-sm transition border border-rose-200 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">⬇️ 書き出す</button>
               <button type="button" onclick="document.getElementById('importFileInput').click()" class="flex-1 bg-rose-50 hover:bg-rose-100 text-rose-900 font-bold py-3 rounded-xl text-xs sm:text-sm transition border border-rose-200 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">⬆ 読み込む</button>
@@ -550,10 +604,10 @@
     </div>
 
     <!-- 下部タブバー -->
-    <div class="fixed bottom-0 left-0 right-0 z-40 max-w-md mx-auto bg-stone-100/95 border-t border-stone-200 p-1.5 shadow-lg" style="padding-bottom: calc(0.375rem + env(safe-area-inset-bottom, 0px));">
+    <div class="fixed bottom-0 left-0 right-0 z-40 max-w-md mx-auto bg-stone-100/95 border-t border-stone-200 p-1.5 shadow-lg" style="padding-bottom: calc(0.625rem + env(safe-area-inset-bottom, 0px));">
       <div class="grid grid-cols-5 gap-1">
         <button type="button" onclick="switchTab('clock')" id="btn-clock" class="tab-btn active py-3 rounded-xl text-xs sm:text-sm font-bold text-center transition shadow-[0_1px_2px_rgba(0,0,0,0.05)] px-0.5">お給料</button>
-        <button type="button" onclick="switchTab('calendar')" id="btn-calendar" class="tab-btn bg-white text-stone-700 border border-stone-200 py-3 rounded-xl text-xs sm:text-sm font-bold text-center transition shadow-[0_1px_2px_rgba(0,0,0,0.05)] px-0.5">シフト登録</button>
+        <button type="button" onclick="switchTab('calendar')" id="btn-calendar" class="tab-btn bg-white text-stone-700 border border-stone-200 py-3 rounded-xl text-xs sm:text-sm font-bold text-center transition shadow-[0_1px_2px_rgba(0,0,0,0.05)] px-0.5">シフト<wbr>登録</button>
         <button type="button" onclick="switchTab('list')" id="btn-list" class="tab-btn bg-white text-stone-700 border border-stone-200 py-3 rounded-xl text-xs sm:text-sm font-bold text-center transition shadow-[0_1px_2px_rgba(0,0,0,0.05)] px-0.5">予定表</button>
         <button type="button" onclick="switchTab('settings')" id="btn-settings" class="tab-btn bg-white text-stone-700 border border-stone-200 py-3 rounded-xl text-xs sm:text-sm font-bold text-center transition shadow-[0_1px_2px_rgba(0,0,0,0.05)] px-0.5">設定</button>
         <button type="button" onclick="switchTab('guide')" id="btn-guide" class="tab-btn bg-white text-stone-700 border border-stone-200 py-3 rounded-xl text-xs sm:text-sm font-bold text-center transition shadow-[0_1px_2px_rgba(0,0,0,0.05)] px-0.5">はじめに</button>
@@ -1485,30 +1539,31 @@
             <span class="font-bold text-stone-900 text-sm sm:text-base">【有給・交通費・その他】</span>
             <div class="grid grid-cols-1 gap-2">
               <div class="bg-stone-50 p-3 rounded-xl border border-stone-200 space-y-1.5">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold text-stone-700">有給休暇<span class="ml-2 text-stone-500 text-xs">1時間あたり</span></span>
-                  <div class="flex items-center gap-1"><input type="text" inputmode="numeric" id="set_wagePaid" oninput="formatInputNumber(this)" class="w-28 p-2 border rounded text-right font-bold bg-white text-sm"><span class="font-bold">円</span></div>
+                <div class="flex items-center justify-between gap-2">
+                  <span class="font-bold text-stone-700 flex-1 min-w-0">有給休暇<span class="ml-2 text-stone-500 text-xs">1時間あたり</span></span>
+                  <div class="flex items-center gap-1 shrink-0"><input type="text" inputmode="numeric" id="set_wagePaid" oninput="formatInputNumber(this)" class="w-28 p-2 border rounded text-right font-bold bg-white text-sm"><span class="font-bold">円</span></div>
                 </div>
                 <p class="text-xs text-stone-500 font-medium">※時給が異なる場合は、<br>頻繁に入っている時間帯の時給か、平均時給を入力してね</p>
-                <div class="flex items-center justify-between pt-1"><span class="font-bold text-stone-700">有給1日あたりの時間</span><div class="flex items-center gap-1"><input type="text" inputmode="decimal" id="set_paidHours" class="w-20 p-2 border rounded text-right font-bold bg-white text-sm" placeholder=""><span class="text-stone-600 text-xs">時間</span></div></div>
+                <div class="flex items-center justify-between gap-2 pt-1">
+                  <span class="font-bold text-stone-700 flex-1 min-w-0">有給1日あたりの時間</span>
+                  <div class="flex items-center gap-1 shrink-0"><input type="text" inputmode="decimal" id="set_paidHours" class="w-20 p-2 border rounded text-right font-bold bg-white text-sm" placeholder=""><span class="text-stone-600 text-xs">時間</span></div>
+                </div>
               </div>
             </div>
 
             <div class="grid grid-cols-1 gap-2.5 pt-1">
-              <div class="bg-stone-50 p-3 rounded-xl border border-stone-200 flex items-center justify-between">
+              <div class="bg-stone-50 p-3 rounded-xl border border-stone-200 space-y-2">
                 <span class="font-bold text-stone-700">交通費</span>
-                <div class="flex items-center gap-2">
-                  <div class="flex items-center gap-1 text-xs">1か月<input type="text" inputmode="numeric" id="set_transMonth" oninput="formatInputNumber(this)" class="w-20 p-1.5 border rounded text-center bg-white font-bold text-sm">円</div>
-                  <div class="flex items-center gap-1 text-xs">1日<input type="text" inputmode="numeric" id="set_transDay" oninput="formatInputNumber(this)" class="w-16 p-1.5 border rounded text-center bg-white font-bold text-sm">円</div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div class="flex items-center gap-1 text-xs min-w-0"><span class="shrink-0 whitespace-nowrap">1か月</span><input type="text" inputmode="numeric" id="set_transMonth" oninput="formatInputNumber(this)" class="flex-1 min-w-0 w-full p-1.5 border rounded text-center bg-white font-bold text-sm"><span class="shrink-0">円</span></div>
+                  <div class="flex items-center gap-1 text-xs min-w-0"><span class="shrink-0 whitespace-nowrap">1日</span><input type="text" inputmode="numeric" id="set_transDay" oninput="formatInputNumber(this)" class="flex-1 min-w-0 w-full p-1.5 border rounded text-center bg-white font-bold text-sm"><span class="shrink-0">円</span></div>
                 </div>
               </div>
               <div class="bg-stone-50 p-3 rounded-xl border border-stone-200 space-y-2">
-                <div class="flex items-center justify-between">
-                  <span class="font-bold text-stone-700">その他</span>
-                  <div class="flex items-center gap-2">
-                    <div class="flex items-center gap-1 text-xs">1か月<input type="text" inputmode="numeric" id="set_allowanceMonth" oninput="formatInputNumber(this)" class="w-20 p-1.5 border rounded text-center bg-white font-bold text-sm">円</div>
-                    <div class="flex items-center gap-1 text-xs">1日<input type="text" inputmode="numeric" id="set_allowanceDay" oninput="formatInputNumber(this)" class="w-16 p-1.5 border rounded text-center bg-white font-bold text-sm">円</div>
-                  </div>
+                <span class="font-bold text-stone-700">その他</span>
+                <div class="grid grid-cols-2 gap-2">
+                  <div class="flex items-center gap-1 text-xs min-w-0"><span class="shrink-0 whitespace-nowrap">1か月</span><input type="text" inputmode="numeric" id="set_allowanceMonth" oninput="formatInputNumber(this)" class="flex-1 min-w-0 w-full p-1.5 border rounded text-center bg-white font-bold text-sm"><span class="shrink-0">円</span></div>
+                  <div class="flex items-center gap-1 text-xs min-w-0"><span class="shrink-0 whitespace-nowrap">1日</span><input type="text" inputmode="numeric" id="set_allowanceDay" oninput="formatInputNumber(this)" class="flex-1 min-w-0 w-full p-1.5 border rounded text-center bg-white font-bold text-sm"><span class="shrink-0">円</span></div>
                 </div>
                 <div>
                   <input type="text" id="set_allowanceMemo" maxlength="7" class="w-full p-2 border rounded-lg bg-white font-medium text-sm" placeholder="手当のメモ（7文字以内）">
@@ -2126,13 +2181,13 @@
       if (wallBox) {
         const base = "mt-3 rounded-xl px-3 py-2.5 transition-colors duration-300 border ";
         wallBox.className = base + "bg-stone-50/70 border-stone-200";
-        if (wall103) wall103.className = "font-bold text-stone-700 text-sm";
+        if (wall103) wall103.className = "font-bold text-stone-700 text-base";
         if (remain103 <= 50000) {
           wallBox.className = base + "bg-rose-50/60 border-rose-200";
-          if (wall103) wall103.className = "font-bold text-rose-600 text-sm";
+          if (wall103) wall103.className = "font-bold text-rose-600 text-base";
         } else if (remain103 <= 100000) {
           wallBox.className = base + "bg-amber-50/60 border-amber-200";
-          if (wall103) wall103.className = "font-bold text-amber-700 text-sm";
+          if (wall103) wall103.className = "font-bold text-amber-700 text-base";
         }
       }
     }
